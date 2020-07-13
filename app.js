@@ -5,13 +5,6 @@ const port = 5000
 const {MONGOURI} = require('./keys')
 const bcrypt = require("bcryptjs")
 
-require('./models/user')
-
-app.use(express.json())
-app.use(require('./routes/auth'))
-
-
-
 mongoose.connect(MONGOURI,{
      useNewUrlParser: true, 
      useUnifiedTopology: true 
@@ -24,12 +17,12 @@ mongoose.connection.on('error', () => {
     console.log("not connected to mongodb atlas")
 })
 
-const customMiddleware = (req, res, next) => {
-    console.log("middleware executed")
-    next()
-}
-// app.use(customMiddleware)
+require('./models/user')
+require('./models/post')
 
+app.use(express.json())
+app.use(require('./routes/auth'))
+app.use(require('./routes/post'))
 
 
 app.listen(port,()=>{
